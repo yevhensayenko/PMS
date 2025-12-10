@@ -5,6 +5,7 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
@@ -28,17 +29,21 @@ public class ParkingSpot {
     @EmbeddedId
     private ParkingSpotId id;
 
-    @MapsId("parkingLotId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parking_lot_id")
+    @JoinColumn(name = "parking_lot_id", insertable = false, updatable = false)
     private ParkingLot parkingLot;
+
+    @MapsId("parkingLevelId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumns({
+            @JoinColumn(name = "parking_lot_id"),
+            @JoinColumn(name = "parking_level")
+    })
+    private ParkingLevel parkingLevel;
 
 
     @Column
     private ParkingSpotType type;
-
-    @Column
-    private Integer level;
 
     @Column
     private boolean available;

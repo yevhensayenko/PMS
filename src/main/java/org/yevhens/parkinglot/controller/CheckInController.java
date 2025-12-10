@@ -1,25 +1,34 @@
 package org.yevhens.parkinglot.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.yevhens.parkinglot.model.CheckInDto;
 import org.yevhens.parkinglot.model.CheckOutDto;
+import org.yevhens.parkinglot.service.CheckInService;
 
 @RestController
 @RequestMapping("/api/v1")
+@RequiredArgsConstructor
 public class CheckInController {
 
-    @PostMapping("/check-in")
-    public void checkIn(@Valid @RequestBody CheckInDto checkInDto) {
+    private final CheckInService checkInService;
 
+    @PostMapping("/check-in")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void checkIn(@Valid @RequestBody CheckInDto checkInDto) {
+        checkInService.checkIn(checkInDto);
     }
 
     @PostMapping("/check-out")
+    @ResponseStatus(HttpStatus.OK)
     public void checkOut(@Valid @RequestBody CheckOutDto checkOutDto) {
-
+        checkInService.checkOut(checkOutDto);
     }
 
 }

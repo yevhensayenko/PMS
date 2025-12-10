@@ -1,7 +1,5 @@
 package org.yevhens.parkinglot.admin.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 import org.yevhens.parkinglot.entity.ParkingLot;
 
 import java.io.Serializable;
@@ -9,8 +7,9 @@ import java.io.Serializable;
 /**
  * DTO for {@link ParkingLot}
  */
-public record ParkingLotDto(
-        @NotBlank String name,
-        @Positive int levelCount
-) implements Serializable {
+public record ParkingLotDto(Long id, String name) implements Serializable {
+
+    public static ParkingLotDto fromEntity(ParkingLot parkingLot) {
+        return new ParkingLotDto(parkingLot.getId(), parkingLot.getName());
+    }
 }

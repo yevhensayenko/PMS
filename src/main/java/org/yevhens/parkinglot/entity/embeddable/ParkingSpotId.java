@@ -9,13 +9,13 @@ import lombok.Setter;
 @Embeddable
 public class ParkingSpotId {
 
-    private Long parkingLotId;
+    private ParkingLevelId parkingLevelId;
     private Integer parkingSpotNo;
 
     public ParkingSpotId() {}
 
-    public ParkingSpotId(Long parkingLotId, Integer parkingSpotNo) {
-        this.parkingLotId = parkingLotId;
+    public ParkingSpotId(Long parkingLotId, Integer parkingLevel, Integer parkingSpotNo) {
+        this.parkingLevelId = new ParkingLevelId(parkingLotId, parkingLevel);
         this.parkingSpotNo = parkingSpotNo;
     }
 }
