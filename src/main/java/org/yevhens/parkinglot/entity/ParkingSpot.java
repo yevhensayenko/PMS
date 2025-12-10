@@ -8,14 +8,21 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.yevhens.parkinglot.entity.embeddable.ParkingSpotId;
+import org.yevhens.parkinglot.model.ParkingSpotType;
 
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "parking_spot")
+@NoArgsConstructor
+@AllArgsConstructor
 public class ParkingSpot {
 
     @EmbeddedId
@@ -28,7 +35,10 @@ public class ParkingSpot {
 
 
     @Column
-    private String vehicleType;
+    private ParkingSpotType type;
+
+    @Column
+    private Integer level;
 
     @Column
     private boolean available;
