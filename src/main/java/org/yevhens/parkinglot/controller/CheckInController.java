@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.yevhens.parkinglot.model.CheckInDto;
 import org.yevhens.parkinglot.model.CheckOutDto;
+import org.yevhens.parkinglot.model.CheckOutResponse;
+import org.yevhens.parkinglot.model.Receipt;
 import org.yevhens.parkinglot.service.CheckInService;
 
 @RestController
@@ -21,14 +23,14 @@ public class CheckInController {
 
     @PostMapping("/check-in")
     @ResponseStatus(HttpStatus.CREATED)
-    public void checkIn(@Valid @RequestBody CheckInDto checkInDto) {
-        checkInService.checkIn(checkInDto);
+    public Receipt checkIn(@Valid @RequestBody CheckInDto checkInDto) {
+        return checkInService.checkIn(checkInDto);
     }
 
     @PostMapping("/check-out")
     @ResponseStatus(HttpStatus.OK)
-    public void checkOut(@Valid @RequestBody CheckOutDto checkOutDto) {
-        checkInService.checkOut(checkOutDto);
+    public CheckOutResponse checkOut(@Valid @RequestBody CheckOutDto checkOutDto) {
+        return checkInService.checkOut(checkOutDto);
     }
 
 }

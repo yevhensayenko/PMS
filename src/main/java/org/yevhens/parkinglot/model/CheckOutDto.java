@@ -6,6 +6,6 @@ import jakarta.validation.constraints.NotNull;
 public record CheckOutDto(
         @NotNull
         @Min(1)
-        Long orderId
+        Long receiptId
 ) {
 }
