@@ -1,7 +1,7 @@
 package org.yevhens.parkinglot.entity;
 
 import org.yevhens.parkinglot.entity.embeddable.ParkingLevelId;
-import org.yevhens.parkinglot.model.ParkingSpotType;
+import org.yevhens.parkinglot.entity.spot.ParkingSpot;
 
 import java.io.Serializable;
 
@@ -11,7 +11,6 @@ import java.io.Serializable;
 public record ParkingSpotDto(Long parkingLotId,
                              Integer level,
                              Integer parkingSpotNo,
-                             ParkingSpotType type,
                              boolean available) implements Serializable {
 
     public static ParkingSpotDto fromEntity(ParkingSpot parkingSpot) {
@@ -19,7 +18,6 @@ public record ParkingSpotDto(Long parkingLotId,
         return new ParkingSpotDto(parkingLevelId.getParkingLotId(),
                 parkingLevelId.getParkingLevel(),
                 parkingSpot.getId().getParkingSpotNo(),
-                parkingSpot.getType(),
                 parkingSpot.isAvailable());
     }
 }

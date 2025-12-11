@@ -2,7 +2,7 @@ package org.yevhens.parkinglot.admin.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import org.yevhens.parkinglot.entity.ParkingSpot;
+import org.yevhens.parkinglot.entity.spot.ParkingSpot;
 import org.yevhens.parkinglot.model.ParkingSpotType;
 
 import java.io.Serializable;
@@ -16,6 +16,8 @@ public record ParkingSpotCreateRequest(
         Integer parkingSpotNo,
 
         @NotNull
-        ParkingSpotType type
+        ParkingSpotType type,
+
+        boolean available
 ) implements Serializable {
 }

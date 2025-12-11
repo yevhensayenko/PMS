@@ -26,7 +26,7 @@ import java.time.Instant;
 @DiscriminatorColumn(
         name = "type",
         discriminatorType = DiscriminatorType.STRING,
-        length = 20
+        length = 40
 )
 public abstract class Vehicle {
 

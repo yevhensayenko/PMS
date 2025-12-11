@@ -1,5 +1,6 @@
 package org.yevhens.parkinglot.service;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.yevhens.parkinglot.entity.ParkingSession;
 import org.yevhens.parkinglot.entity.vehicle.Vehicle;
@@ -8,6 +9,7 @@ import org.yevhens.parkinglot.util.ReflectionUtils;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -22,11 +24,12 @@ public class PricingService {
     }
 
     public BigDecimal calculateFee(ParkingSession parkingSession) {
-        var strategy = strategies.get(parkingSession.getVehicle().getClass());
-        if (strategy == null) {
-            throw new UnsupportedOperationException("%s vehicle is not supported"
-                    .formatted(parkingSession.getVehicle().getClass().getSimpleName()));
-        }
-        return strategy.calculateFee(parkingSession);
+        final var vehicleClass = Hibernate.getClass(parkingSession.getVehicle());
+
+        return Optional.of(vehicleClass)
+                .map(strategies::get)
+                .map(strategy -> strategy.calculateFee(parkingSession))
+                .orElseThrow(() -> new UnsupportedOperationException("%s vehicle is not supported"
+                        .formatted(vehicleClass.getSimpleName())));
     }
 }

@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.yevhens.parkinglot.entity.embeddable.ParkingLevelId;
+import org.yevhens.parkinglot.entity.spot.ParkingSpot;
 
 import java.util.Collection;
 

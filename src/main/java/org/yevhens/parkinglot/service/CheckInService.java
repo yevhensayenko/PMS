@@ -5,9 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.yevhens.parkinglot.entity.ParkingLot;
 import org.yevhens.parkinglot.entity.ParkingSession;
-import org.yevhens.parkinglot.entity.ParkingSpot;
 import org.yevhens.parkinglot.entity.ParkingSpotDto;
+import org.yevhens.parkinglot.entity.spot.ParkingSpot;
 import org.yevhens.parkinglot.entity.vehicle.Vehicle;
+import org.yevhens.parkinglot.exception.NoAvailableSpotsException;
 import org.yevhens.parkinglot.exception.ResourceNotFoundException;
 import org.yevhens.parkinglot.model.CheckInDto;
 import org.yevhens.parkinglot.model.CheckOutDto;
@@ -21,6 +22,7 @@ import org.yevhens.parkinglot.repository.VehicleRepository;
 import org.yevhens.parkinglot.util.VehicleFactory;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.Instant;
 
 @Service
@@ -32,6 +34,7 @@ public class CheckInService {
     private final VehicleRepository vehicleRepository;
     private final ParkingSessionRepository parkingSessionRepository;
     private final PricingService pricingService;
+    private final SpotAssignmentService spotAssignmentService;
 
     @Transactional
     public Receipt checkIn(CheckInDto checkInDto) {
@@ -39,13 +42,10 @@ public class CheckInService {
         final ParkingLot parkingLot = parkingLotRepository.findById(checkInDto.parkingLotId())
                 .orElseThrow(ResourceNotFoundException::new);
 
-        final ParkingSpot parkingSpot = parkingSpotRepository.findByParkingLotIdAndAvailableTrueAndType(parkingLot.getId(), checkInDto.vehicleType().getParkingSpotType())
-                .orElseThrow();
-
-        parkingSpot.setAvailable(false);
-        parkingSpotRepository.save(parkingSpot);
-
         final Vehicle vehicle = upsertVehicle(checkInDto);
+
+        final ParkingSpot parkingSpot = spotAssignmentService.assignSpot(vehicle, parkingLot)
+                .orElseThrow(NoAvailableSpotsException::new);
 
         final ParkingSession savedSession = createParkingSession(parkingSpot, vehicle);
 
@@ -57,10 +57,29 @@ public class CheckInService {
                 .build();
     }
 
+    @Transactional
+    public CheckOutResponse checkOut(CheckOutDto checkOutDto) {
+
+        final ParkingSession parkingSession = parkingSessionRepository.findByIdAndFinishDateTimeNull(checkOutDto.receiptId())
+                .map(session -> {
+                    session.setFinishDateTime(Instant.now());
+                    return parkingSessionRepository.save(session);
+                })
+                .orElseThrow(ResourceNotFoundException::new);
+
+        parkingSession.getParkingSpot().setAvailable(true);
+        parkingSpotRepository.save(parkingSession.getParkingSpot());
+
+        final BigDecimal fee = pricingService.calculateFee(parkingSession);
+
+        Duration duration = Duration.between(parkingSession.getStartDateTime(), parkingSession.getFinishDateTime());
+        return new CheckOutResponse(checkOutDto.receiptId(), parkingSession.getStartDateTime(), parkingSession.getFinishDateTime(), duration, fee);
+    }
+
     private Vehicle upsertVehicle(CheckInDto checkInDto) {
         return vehicleRepository.findById(checkInDto.licensePlate())
                 .orElseGet(() -> {
-                    Vehicle vehicle = VehicleFactory.create(checkInDto.vehicleType(), checkInDto.licensePlate());
+                    Vehicle vehicle = VehicleFactory.create(checkInDto.vehicleType(), checkInDto.licensePlate(), checkInDto.handicapped());
                     return vehicleRepository.save(vehicle);
                 });
     }
@@ -73,21 +92,5 @@ public class CheckInService {
                 .build();
 
         return parkingSessionRepository.save(session);
-    }
-
-    @Transactional
-    public CheckOutResponse checkOut(CheckOutDto checkOutDto) {
-
-        final ParkingSession parkingSession = parkingSessionRepository.findByIdAndFinishDateTimeNull(checkOutDto.receiptId())
-                .orElseThrow(ResourceNotFoundException::new);
-        parkingSession.setFinishDateTime(Instant.now());
-        parkingSessionRepository.save(parkingSession);
-
-        parkingSession.getParkingSpot().setAvailable(true);
-        parkingSpotRepository.save(parkingSession.getParkingSpot());
-
-        final BigDecimal fee = pricingService.calculateFee(parkingSession);
-
-        return new CheckOutResponse(checkOutDto.receiptId(), fee);
     }
 }

@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.yevhens.parkinglot.entity.spot.ParkingSpot;
 import org.yevhens.parkinglot.entity.vehicle.Vehicle;
 
 import java.time.Instant;

@@ -13,7 +13,7 @@ public final class VehicleFactory {
     private VehicleFactory() {
     }
 
-    public static Vehicle create(VehicleType type, String plate) {
+    public static Vehicle create(VehicleType type, String plate, boolean handicapped) {
         String normalizedPlate = plate.trim().toUpperCase();
 
         return switch (type) {
@@ -21,6 +21,7 @@ public final class VehicleFactory {
                 Car car = new Car();
                 car.setLicensePlate(normalizedPlate);
                 car.setCreatedAt(Instant.now());
+                car.setHandicapped(handicapped);
                 yield car;
             }
             case MOTORCYCLE -> {

@@ -11,6 +11,7 @@ public record CheckInDto(
         @NotBlank
         String licensePlate,
         @NotNull
-        VehicleType vehicleType
+        VehicleType vehicleType,
+        boolean handicapped
 ) {
 }
