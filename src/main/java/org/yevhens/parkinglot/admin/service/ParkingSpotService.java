@@ -2,6 +2,7 @@ package org.yevhens.parkinglot.admin.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.yevhens.parkinglot.admin.dto.ChangeAvailabilityDto;
 import org.yevhens.parkinglot.admin.dto.ParkingSpotCreateRequest;
 import org.yevhens.parkinglot.entity.ParkingLevel;
@@ -20,7 +21,6 @@ public class ParkingSpotService {
     private final ParkingLevelRepository parkingLevelRepository;
     private final ParkingSpotRepository parkingSpotRepository;
 
-
     public ParkingSpotDto registerParkingSpot(Long parkingLotId, Integer level, ParkingSpotCreateRequest dto) {
 
         ParkingLevel parkingLevel = parkingLevelRepository.findById(new ParkingLevelId(parkingLotId, level))
@@ -34,7 +34,11 @@ public class ParkingSpotService {
         parkingSpotRepository.deleteById(new ParkingSpotId(parkingLotId, level, parkingSpotNo));
     }
 
+    @Transactional
     public void changeAvailability(Long parkingLotId, Integer level, Integer parkingSpotNo, ChangeAvailabilityDto dto) {
-        parkingSpotRepository.updateAvailability(new ParkingSpotId(parkingLotId, level, parkingSpotNo), dto.isAvailable());
+        int updatedCount = parkingSpotRepository.updateAvailability(new ParkingSpotId(parkingLotId, level, parkingSpotNo), dto.isAvailable());
+        if (updatedCount == 0) {
+            throw new ResourceNotFoundException();
+        }
     }
 }

@@ -10,5 +10,5 @@ import java.time.Instant;
  * DTO for {@link org.yevhens.parkinglot.entity.ParkingSession}
  */
 @Builder
-public record Receipt(Long id, VehicleDto vehicle, ParkingSpotDto parkingSpot, Instant startDateTime, Instant finishDateTime) implements Serializable {
+public record Receipt(Long id, VehicleDto vehicle, ParkingSpotDto parkingSpot, Instant startDateTime) implements Serializable {
 }

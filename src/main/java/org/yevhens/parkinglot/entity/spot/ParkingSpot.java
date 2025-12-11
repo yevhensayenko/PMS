@@ -18,7 +18,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.yevhens.parkinglot.entity.ParkingLevel;
-import org.yevhens.parkinglot.entity.ParkingLot;
 import org.yevhens.parkinglot.entity.embeddable.ParkingSpotId;
 
 @Getter
@@ -37,10 +36,6 @@ public abstract class ParkingSpot {
 
     @EmbeddedId
     private ParkingSpotId id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parking_lot_id", insertable = false, updatable = false)
-    private ParkingLot parkingLot;
 
     @MapsId("parkingLevelId")
     @ManyToOne(fetch = FetchType.LAZY)

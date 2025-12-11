@@ -6,6 +6,7 @@ import org.yevhens.parkinglot.entity.ParkingSession;
 import org.yevhens.parkinglot.entity.vehicle.Car;
 import org.yevhens.parkinglot.entity.vehicle.Motorcycle;
 import org.yevhens.parkinglot.entity.vehicle.Truck;
+import org.yevhens.parkinglot.entity.vehicle.Vehicle;
 import org.yevhens.parkinglot.service.pricing.CarPricingStrategy;
 import org.yevhens.parkinglot.service.pricing.MotorcyclePricingStrategy;
 import org.yevhens.parkinglot.service.pricing.TruckPricingStrategy;
@@ -16,6 +17,7 @@ import java.time.Instant;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class PricingServiceTest {
 
@@ -62,5 +64,24 @@ class PricingServiceTest {
         assertThat(pricingService.calculateFee(carSession)).isEqualTo(new BigDecimal("3.00"));
         assertThat(pricingService.calculateFee(motoSession)).isEqualTo(new BigDecimal("1.50"));
         assertThat(pricingService.calculateFee(truckSession)).isEqualTo(new BigDecimal("4.50"));
+    }
+
+    @Test
+    void throwsWhenVehicleTypeUnsupported() {
+        class Plane extends Vehicle {
+        }
+
+        Vehicle unsupported = new Plane();
+        unsupported.setLicensePlate("PLANE-404");
+
+        ParkingSession parkingSession = ParkingSession.builder()
+                .vehicle(unsupported)
+                .startDateTime(Instant.now())
+                .finishDateTime(Instant.now().plusSeconds(60))
+                .build();
+
+        assertThatThrownBy(() -> pricingService.calculateFee(parkingSession))
+                .isInstanceOf(UnsupportedOperationException.class)
+                .hasMessageContaining("Plane vehicle is not supported");
     }
 }

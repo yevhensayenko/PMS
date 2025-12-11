@@ -95,7 +95,7 @@ public class AdminController {
                                    @PathVariable @Min(1) Integer level,
                                    @PathVariable Integer parkingSpotNo,
                                    @Valid @RequestBody ChangeAvailabilityDto dto) {
-        parkingSpotService.changeAvailability(parkingLotId, parkingSpotNo, level, dto);
+        parkingSpotService.changeAvailability(parkingLotId, level, parkingSpotNo, dto);
     }
 
 }

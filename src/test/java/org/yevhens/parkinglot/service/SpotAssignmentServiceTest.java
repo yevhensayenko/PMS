@@ -55,7 +55,6 @@ class SpotAssignmentServiceTest {
 
         CompactSpot spot = CompactSpot.builder()
                 .id(new ParkingSpotId(1L, 1, 10))
-                .parkingLot(parkingLot)
                 .available(true)
                 .build();
 
@@ -80,7 +79,6 @@ class SpotAssignmentServiceTest {
 
         HandicappedSpot spot = HandicappedSpot.builder()
                 .id(new ParkingSpotId(1L, 1, 10))
-                .parkingLot(parkingLot)
                 .available(true)
                 .build();
 
@@ -104,7 +102,6 @@ class SpotAssignmentServiceTest {
 
         CompactSpot compactSpot = CompactSpot.builder()
                 .id(new ParkingSpotId(1L, 1, 5))
-                .parkingLot(parkingLot)
                 .available(true)
                 .build();
 

@@ -16,17 +16,17 @@ public interface ParkingSpotRepository extends JpaRepository<ParkingSpot, Parkin
 
     @Modifying
     @Query("update ParkingSpot set available = :available where id = :id")
-    void updateAvailability(ParkingSpotId id, boolean available);
+    int updateAvailability(ParkingSpotId id, boolean available);
 
-    @Query("select p from ParkingSpot p where p.parkingLot.id = ?1 and p.available = true and type(p) = MotorcycleSpot")
+    @Query("select p from ParkingSpot p where p.parkingLevel.parkingLot.id = ?1 and p.available = true and type(p) = MotorcycleSpot")
     Optional<MotorcycleSpot> findAvailableMotorcycleSpot(Long parkingLotId);
 
-    @Query("select p from ParkingSpot p where p.parkingLot.id = ?1 and p.available = true and type(p) = LargeSpot")
+    @Query("select p from ParkingSpot p where p.parkingLevel.parkingLot.id = ?1 and p.available = true and type(p) = LargeSpot")
     Optional<LargeSpot> findAvailableLargeSpot(Long parkingLotId);
 
-    @Query("select p from ParkingSpot p where p.parkingLot.id = ?1 and p.available = true and type(p) = CompactSpot")
+    @Query("select p from ParkingSpot p where p.parkingLevel.parkingLot.id = ?1 and p.available = true and type(p) = CompactSpot")
     Optional<CompactSpot> findAvailableCompactSpot(Long parkingLotId);
 
-    @Query("select p from ParkingSpot p where p.parkingLot.id = ?1 and p.available = true and type(p) = HandicappedSpot ")
+    @Query("select p from ParkingSpot p where p.parkingLevel.parkingLot.id = ?1 and p.available = true and type(p) = HandicappedSpot ")
     Optional<HandicappedSpot> findAvailableHandicappedSpot(Long parkingLotId);
 }

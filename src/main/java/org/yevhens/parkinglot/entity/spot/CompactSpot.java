@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.yevhens.parkinglot.entity.ParkingLevel;
-import org.yevhens.parkinglot.entity.ParkingLot;
 import org.yevhens.parkinglot.entity.embeddable.ParkingSpotId;
 
 @Entity
@@ -14,7 +13,7 @@ import org.yevhens.parkinglot.entity.embeddable.ParkingSpotId;
 public class CompactSpot extends ParkingSpot {
 
     @Builder
-    public CompactSpot(ParkingSpotId id, ParkingLot parkingLot, ParkingLevel parkingLevel, boolean available) {
-        super(id, parkingLot, parkingLevel, available);
+    public CompactSpot(ParkingSpotId id, ParkingLevel parkingLevel, boolean available) {
+        super(id, parkingLevel, available);
     }
 }
