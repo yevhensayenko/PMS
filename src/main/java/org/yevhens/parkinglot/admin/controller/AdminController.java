@@ -22,11 +22,11 @@ import org.yevhens.parkinglot.admin.dto.ParkingLevelDto;
 import org.yevhens.parkinglot.admin.dto.ParkingLotCreateRequest;
 import org.yevhens.parkinglot.admin.dto.ParkingLotDto;
 import org.yevhens.parkinglot.admin.dto.ParkingSpotCreateRequest;
-import org.yevhens.parkinglot.admin.service.ParkingLevelService;
-import org.yevhens.parkinglot.admin.service.ParkingLotService;
-import org.yevhens.parkinglot.admin.service.ParkingSpotService;
 import org.yevhens.parkinglot.config.validation.ApiErrorResponse;
 import org.yevhens.parkinglot.entity.ParkingSpotDto;
+import org.yevhens.parkinglot.service.ParkingLevelService;
+import org.yevhens.parkinglot.service.ParkingLotService;
+import org.yevhens.parkinglot.service.ParkingSpotService;
 
 @RestController
 @RequestMapping("/api/v1/admin")

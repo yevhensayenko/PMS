@@ -1,5 +1,7 @@
 package org.yevhens.parkinglot.config.validation;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -27,6 +29,18 @@ public class GlobalExceptionHandler {
         return new ApiErrorResponse(Instant.now(), "Request validation failed", fieldErrors);
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ApiErrorResponse handleMethodArgumentNotValid(ConstraintViolationException ex) {
+
+        List<FieldValidationError> fieldErrors = ex.getConstraintViolations()
+                .stream()
+                .map(this::mapFieldError)
+                .toList();
+
+        return new ApiErrorResponse(Instant.now(), "Request validation failed", fieldErrors);
+    }
+
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ExceptionHandler(NoAvailableSpotsException.class)
     public ApiErrorResponse handleMethodArgumentNotValid() {
@@ -35,5 +49,9 @@ public class GlobalExceptionHandler {
 
     private FieldValidationError mapFieldError(FieldError error) {
         return new FieldValidationError(error.getField(), error.getDefaultMessage());
+    }
+
+    private FieldValidationError mapFieldError(ConstraintViolation<?> violation) {
+        return new FieldValidationError(violation.getPropertyPath().toString(), violation.getMessage());
     }
 }

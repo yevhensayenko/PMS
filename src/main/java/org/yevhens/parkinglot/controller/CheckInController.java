@@ -17,6 +17,7 @@ import org.yevhens.parkinglot.model.CheckOutDto;
 import org.yevhens.parkinglot.model.CheckOutResponse;
 import org.yevhens.parkinglot.model.Receipt;
 import org.yevhens.parkinglot.service.CheckInService;
+import org.yevhens.parkinglot.service.CheckOutService;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -34,6 +35,7 @@ import org.yevhens.parkinglot.service.CheckInService;
 public class CheckInController {
 
     private final CheckInService checkInService;
+    private final CheckOutService checkOutService;
 
     @PostMapping("/check-in")
     @ResponseStatus(HttpStatus.CREATED)
@@ -44,7 +46,7 @@ public class CheckInController {
     @PostMapping("/check-out")
     @ResponseStatus(HttpStatus.OK)
     public CheckOutResponse checkOut(@Valid @RequestBody CheckOutDto checkOutDto) {
-        return checkInService.checkOut(checkOutDto);
+        return checkOutService.checkOut(checkOutDto);
     }
 
 }

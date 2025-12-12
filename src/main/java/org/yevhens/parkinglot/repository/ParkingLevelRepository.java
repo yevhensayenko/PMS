@@ -4,5 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.yevhens.parkinglot.entity.ParkingLevel;
 import org.yevhens.parkinglot.entity.embeddable.ParkingLevelId;
 
+import java.util.Collection;
+
 public interface ParkingLevelRepository extends JpaRepository<ParkingLevel, ParkingLevelId> {
+    Collection<ParkingLevel> findAllByParkingLotId(Long parkingLotId);
 }

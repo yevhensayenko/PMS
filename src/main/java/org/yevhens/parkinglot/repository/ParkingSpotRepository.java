@@ -3,6 +3,7 @@ package org.yevhens.parkinglot.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.yevhens.parkinglot.entity.embeddable.ParkingLevelId;
 import org.yevhens.parkinglot.entity.embeddable.ParkingSpotId;
 import org.yevhens.parkinglot.entity.spot.CompactSpot;
 import org.yevhens.parkinglot.entity.spot.HandicappedSpot;
@@ -10,6 +11,7 @@ import org.yevhens.parkinglot.entity.spot.LargeSpot;
 import org.yevhens.parkinglot.entity.spot.MotorcycleSpot;
 import org.yevhens.parkinglot.entity.spot.ParkingSpot;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public interface ParkingSpotRepository extends JpaRepository<ParkingSpot, ParkingSpotId> {
@@ -29,4 +31,6 @@ public interface ParkingSpotRepository extends JpaRepository<ParkingSpot, Parkin
 
     @Query("select p from ParkingSpot p where p.parkingLevel.parkingLot.id = ?1 and p.available = true and type(p) = HandicappedSpot ")
     Optional<HandicappedSpot> findAvailableHandicappedSpot(Long parkingLotId);
+
+    Collection<ParkingSpot> findAllByParkingLevelId(ParkingLevelId parkingLevelId);
 }

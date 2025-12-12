@@ -69,7 +69,7 @@ curl "http://localhost:8080/api/v1/admin/parking-lots"
 # Create a parking level for lot 1
 curl -X POST "http://localhost:8080/api/v1/admin/parking-lots/1/levels" \
   -H "Content-Type: application/json" \
-  -d '{ "levelNumber": 1, "spots": [] }'
+  -d '{ "level": 1}'
 
 # Add a compact spot to lot 1 level 1
 curl -X POST "http://localhost:8080/api/v1/admin/parking-lots/1/levels/1/spots" \
@@ -132,7 +132,10 @@ Successful response (200 OK):
 
 ## Known limitations / TODOs
 
-- Authentication/authorization is not implemented for simplicity - all operations are open. Spring security should be added with proper config.
+- Authentication/authorization is not implemented for simplicity - all operations are open. Spring security should be added with proper config. Also it would
+  make sense to have all CRUD operations for an entity in corresponding controllers. Write endpoint can be marked as admin-only using Spring security
+  annotation. Currently all admin endpoints reside in a separate controller just for presentation purposes.
 - Admin can make spot available when it is occupied by a vehicle. Should be handled properly (e.g. reject request or finish the parking session).
 - Level index in parking lot probably should not be provided but instead automatically incremented. On the other hand, it can make it harder to have custom
   level indexes (e.g. start from the second floor).
+- Test coverage can be improved, especially unit tests.

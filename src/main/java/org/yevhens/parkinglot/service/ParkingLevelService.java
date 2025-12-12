@@ -1,4 +1,4 @@
-package org.yevhens.parkinglot.admin.service;
+package org.yevhens.parkinglot.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +11,8 @@ import org.yevhens.parkinglot.exception.ResourceNotFoundException;
 import org.yevhens.parkinglot.repository.ParkingLevelRepository;
 import org.yevhens.parkinglot.repository.ParkingLotRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ParkingLevelService {
@@ -18,6 +20,12 @@ public class ParkingLevelService {
     private final ParkingLotRepository parkingLotRepository;
     private final ParkingLevelRepository parkingLevelRepository;
 
+    public List<ParkingLevelDto> getAllParkingLevels(Long parkingLotId) {
+        return parkingLevelRepository.findAllByParkingLotId(parkingLotId)
+                .stream()
+                .map(ParkingLevelDto::fromEntity)
+                .toList();
+    }
 
     public ParkingLevelDto addParkingLevel(Long parkingLotId, ParkingLevelCreateRequest dto) {
 

@@ -16,6 +16,7 @@ import org.yevhens.parkinglot.model.Receipt;
 import org.yevhens.parkinglot.model.VehicleDto;
 import org.yevhens.parkinglot.model.VehicleType;
 import org.yevhens.parkinglot.service.CheckInService;
+import org.yevhens.parkinglot.service.CheckOutService;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -38,6 +39,9 @@ class CheckInControllerTest {
 
     @MockitoBean
     private CheckInService checkInService;
+
+    @MockitoBean
+    private CheckOutService checkOutService;
 
     @Test
     @DisplayName("POST /api/v1/check-in returns receipt when request is valid")
@@ -77,7 +81,7 @@ class CheckInControllerTest {
                 new BigDecimal("25.50")
         );
 
-        when(checkInService.checkOut(request)).thenReturn(response);
+        when(checkOutService.checkOut(request)).thenReturn(response);
 
         mockMvc.perform(post("/api/v1/check-out")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -89,6 +93,6 @@ class CheckInControllerTest {
                 .andExpect(jsonPath("$.entryTime").value("2024-01-01T10:15:30Z"))
                 .andExpect(jsonPath("$.exitTime").value("2024-01-01T12:45:30Z"));
 
-        verify(checkInService).checkOut(request);
+        verify(checkOutService).checkOut(request);
     }
 }

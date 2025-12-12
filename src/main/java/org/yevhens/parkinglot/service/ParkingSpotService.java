@@ -1,4 +1,4 @@
-package org.yevhens.parkinglot.admin.service;
+package org.yevhens.parkinglot.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,12 +14,21 @@ import org.yevhens.parkinglot.repository.ParkingLevelRepository;
 import org.yevhens.parkinglot.repository.ParkingSpotRepository;
 import org.yevhens.parkinglot.util.ParkingSpotFactory;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ParkingSpotService {
 
     private final ParkingLevelRepository parkingLevelRepository;
     private final ParkingSpotRepository parkingSpotRepository;
+
+    public List<ParkingSpotDto> getAllParkingSpots(Long parkingLotId, Integer level) {
+        return parkingSpotRepository.findAllByParkingLevelId(new ParkingLevelId(parkingLotId, level))
+                .stream()
+                .map(ParkingSpotDto::fromEntity)
+                .toList();
+    }
 
     public ParkingSpotDto registerParkingSpot(Long parkingLotId, Integer level, ParkingSpotCreateRequest dto) {
 

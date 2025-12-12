@@ -15,14 +15,14 @@ import org.yevhens.parkinglot.admin.dto.ParkingLevelCreateRequest;
 import org.yevhens.parkinglot.admin.dto.ParkingLevelDto;
 import org.yevhens.parkinglot.admin.dto.ParkingLotCreateRequest;
 import org.yevhens.parkinglot.admin.dto.ParkingSpotCreateRequest;
-import org.yevhens.parkinglot.admin.service.ParkingLevelService;
-import org.yevhens.parkinglot.admin.service.ParkingLotService;
-import org.yevhens.parkinglot.admin.service.ParkingSpotService;
 import org.yevhens.parkinglot.entity.spot.ParkingSpot;
 import org.yevhens.parkinglot.model.ParkingSpotType;
 import org.yevhens.parkinglot.repository.ParkingLevelRepository;
 import org.yevhens.parkinglot.repository.ParkingLotRepository;
 import org.yevhens.parkinglot.repository.ParkingSpotRepository;
+import org.yevhens.parkinglot.service.ParkingLevelService;
+import org.yevhens.parkinglot.service.ParkingLotService;
+import org.yevhens.parkinglot.service.ParkingSpotService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
