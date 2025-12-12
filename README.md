@@ -62,19 +62,40 @@ It can be used to try the API.
 
 Admin endpoints are available at `/api/v1/admin` for CRUD related to parking lots, levels and spots. For example:
 
+Create a parking lot
 ```bash
-# Get all parking lots
-curl "http://localhost:8080/api/v1/admin/parking-lots"
-
-# Create a parking level for lot 1
+curl -X POST "http://localhost:8080/api/v1/admin/parking-lots" \
+  -H "Content-Type: application/json" \
+  -d '{ "name": "Test lot" }'
+```
+Create a parking level for lot 1
+```bash
 curl -X POST "http://localhost:8080/api/v1/admin/parking-lots/1/levels" \
   -H "Content-Type: application/json" \
-  -d '{ "level": 1}'
-
-# Add a compact spot to lot 1 level 1
-curl -X POST "http://localhost:8080/api/v1/admin/parking-lots/1/levels/1/spots" \
+  -d '{ "level": 1 }'
+```
+Add a compact spot to lot 1 level 1
+```bash
+curl -X POST "http://localhost:8080/api/v1/admin/parking-lots/1/levels/1/parking-spots" \
   -H "Content-Type: application/json" \
-  -d '{ "spotNumber": 10, "type": "COMPACT" }'
+  -d '{ "parkingSpotNo": 10, "type": "COMPACT", "available": true }'
+```
+
+### Get endpoints
+
+Get all parking lots
+```bash
+curl "http://localhost:8080/api/v1/parking-lots"
+```
+
+Get all parking levels for a parking lot 1
+```bash
+curl "http://localhost:8080/api/v1/parking-lots/1/levels"
+```
+
+Get all parking spots for a parking level 1 in a parking lot 1
+```bash
+curl "http://localhost:8080/api/v1/parking-lots/1/levels/1/parking-spots"
 ```
 
 ### Check in a vehicle
@@ -94,17 +115,15 @@ Successful response (201 Created):
 
 ```json
 {
-  "id": 42,
+  "id": 1,
   "vehicle": {
-    "licensePlate": "ABC-123-XY"
+    "licensePlate": "Test Lot"
   },
   "parkingSpot": {
-    "id": {
-      "parkingLotId": 1,
-      "parkingLevelId": 0,
-      "spotNumber": 7
-    },
-    "type": "HANDICAPPED"
+    "parkingLotId": 1,
+    "level": 1,
+    "parkingSpotNo": 1,
+    "available": false
   },
   "startDateTime": "2024-06-20T09:15:00Z"
 }
@@ -138,4 +157,5 @@ Successful response (200 OK):
 - Admin can make spot available when it is occupied by a vehicle. Should be handled properly (e.g. reject request or finish the parking session).
 - Level index in parking lot probably should not be provided but instead automatically incremented. On the other hand, it can make it harder to have custom
   level indexes (e.g. start from the second floor).
+- No validation when admin tries to insert a level or a spot with the same ID.
 - Test coverage can be improved, especially unit tests.
