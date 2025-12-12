@@ -14,6 +14,6 @@ public class CompactSpot extends ParkingSpot {
 
     @Builder
     public CompactSpot(ParkingSpotId id, ParkingLevel parkingLevel, boolean available) {
-        super(id, parkingLevel, available);
+        super(id, parkingLevel, available, null);
     }
 }

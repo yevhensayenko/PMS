@@ -1,5 +1,6 @@
 package org.yevhens.parkinglot.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -36,7 +37,7 @@ public class ParkingLevel {
     private ParkingLot parkingLot;
 
 
-    @OneToMany(mappedBy = "parkingLevel")
+    @OneToMany(mappedBy = "parkingLevel", cascade = { CascadeType.REMOVE, CascadeType.PERSIST })
     private Collection<ParkingSpot> parkingSpots;
 
 }

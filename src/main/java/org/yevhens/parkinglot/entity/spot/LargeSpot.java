@@ -14,6 +14,6 @@ public class LargeSpot extends ParkingSpot {
 
     @Builder
     public LargeSpot(ParkingSpotId id, ParkingLevel parkingLevel, boolean available) {
-        super(id, parkingLevel, available);
+        super(id, parkingLevel, available, null);
     }
 }

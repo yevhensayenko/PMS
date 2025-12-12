@@ -14,6 +14,6 @@ public class MotorcycleSpot extends ParkingSpot {
 
     @Builder
     public MotorcycleSpot(ParkingSpotId id, ParkingLevel parkingLevel, boolean available) {
-        super(id, parkingLevel, available);
+        super(id, parkingLevel, available, null);
     }
 }

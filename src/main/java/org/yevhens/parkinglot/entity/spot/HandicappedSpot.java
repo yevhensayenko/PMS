@@ -14,6 +14,6 @@ public class HandicappedSpot extends ParkingSpot {
 
     @Builder
     public HandicappedSpot(ParkingSpotId id, ParkingLevel parkingLevel, boolean available) {
-        super(id, parkingLevel, available);
+        super(id, parkingLevel, available, null);
     }
 }

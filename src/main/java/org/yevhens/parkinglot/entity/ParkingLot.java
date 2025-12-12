@@ -1,5 +1,6 @@
 package org.yevhens.parkinglot.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,7 +32,7 @@ public class ParkingLot {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "parkingLot")
+    @OneToMany(mappedBy = "parkingLot", cascade = { CascadeType.REMOVE, CascadeType.PERSIST })
     private Collection<ParkingLevel> ParkingLevels;
 
 }
