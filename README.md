@@ -134,7 +134,7 @@ Successful response (201 Created):
 ```bash
 curl -X POST "http://localhost:8080/api/v1/check-out" \
   -H "Content-Type: application/json" \
-  -d '{ "receiptId": 42 }'
+  -d '{ "receiptId": 1 }'
 ```
 
 Successful response (200 OK):
@@ -159,3 +159,4 @@ Successful response (200 OK):
   level indexes (e.g. start from the second floor).
 - No validation when admin tries to insert a level or a spot with the same ID.
 - Test coverage can be improved, especially unit tests.
+  - Available parking slot should be implemented in a way that only one place is returned (See TODO in ParkingSpotRepository).

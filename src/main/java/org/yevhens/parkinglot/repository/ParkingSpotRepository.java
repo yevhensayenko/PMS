@@ -12,8 +12,11 @@ import org.yevhens.parkinglot.entity.spot.MotorcycleSpot;
 import org.yevhens.parkinglot.entity.spot.ParkingSpot;
 
 import java.util.Collection;
-import java.util.Optional;
+import java.util.List;
 
+// TODO: JPQL does not support "find first" queries, while it is not trivial to implement it using JPA query methods
+//  so, the query returns the whole avaialble places list, that is not optimal.
+//  Need to find better approach here (split repo to separate repos per each parkin spot?)
 public interface ParkingSpotRepository extends JpaRepository<ParkingSpot, ParkingSpotId> {
 
     @Modifying
@@ -21,16 +24,16 @@ public interface ParkingSpotRepository extends JpaRepository<ParkingSpot, Parkin
     int updateAvailability(ParkingSpotId id, boolean available);
 
     @Query("select p from ParkingSpot p where p.parkingLevel.parkingLot.id = ?1 and p.available = true and type(p) = MotorcycleSpot")
-    Optional<MotorcycleSpot> findAvailableMotorcycleSpot(Long parkingLotId);
+    List<MotorcycleSpot> findAvailableMotorcycleSpots(Long parkingLotId);
 
     @Query("select p from ParkingSpot p where p.parkingLevel.parkingLot.id = ?1 and p.available = true and type(p) = LargeSpot")
-    Optional<LargeSpot> findAvailableLargeSpot(Long parkingLotId);
+    List<LargeSpot> findAvailableLargeSpots(Long parkingLotId);
 
     @Query("select p from ParkingSpot p where p.parkingLevel.parkingLot.id = ?1 and p.available = true and type(p) = CompactSpot")
-    Optional<CompactSpot> findAvailableCompactSpot(Long parkingLotId);
+    List<CompactSpot> findAvailableCompactSpots(Long parkingLotId);
 
     @Query("select p from ParkingSpot p where p.parkingLevel.parkingLot.id = ?1 and p.available = true and type(p) = HandicappedSpot ")
-    Optional<HandicappedSpot> findAvailableHandicappedSpot(Long parkingLotId);
+    List<HandicappedSpot> findAvailableHandicappedSpots(Long parkingLotId);
 
     Collection<ParkingSpot> findAllByParkingLevelId(ParkingLevelId parkingLevelId);
 }

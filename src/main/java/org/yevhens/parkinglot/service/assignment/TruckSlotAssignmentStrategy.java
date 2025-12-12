@@ -18,6 +18,6 @@ public class TruckSlotAssignmentStrategy implements SlotAssignmentStrategy<Truck
 
     @Override
     public Optional<? extends ParkingSpot> assignSpot(Truck vehicle, ParkingLot parkingLot) {
-        return parkingSpotRepository.findAvailableLargeSpot(parkingLot.getId());
+        return parkingSpotRepository.findAvailableLargeSpots(parkingLot.getId()).stream().findFirst();
     }
 }

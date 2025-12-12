@@ -58,8 +58,8 @@ class SpotAssignmentServiceTest {
                 .available(true)
                 .build();
 
-        when(parkingSpotRepository.findAvailableCompactSpot(parkingLot.getId()))
-                .thenReturn(Optional.of(spot));
+        when(parkingSpotRepository.findAvailableCompactSpots(parkingLot.getId()))
+                .thenReturn(List.of(spot));
         when(parkingSpotRepository.save(any(ParkingSpot.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -69,7 +69,7 @@ class SpotAssignmentServiceTest {
         assertThat(assignedSpot.get()).isSameAs(spot);
         assertThat(assignedSpot.get().isAvailable()).isFalse();
         verify(parkingSpotRepository).save(spot);
-        verify(parkingSpotRepository, never()).findAvailableHandicappedSpot(any());
+        verify(parkingSpotRepository, never()).findAvailableHandicappedSpots(any());
     }
 
     @Test
@@ -82,8 +82,8 @@ class SpotAssignmentServiceTest {
                 .available(true)
                 .build();
 
-        when(parkingSpotRepository.findAvailableHandicappedSpot(parkingLot.getId()))
-                .thenReturn(Optional.of(spot));
+        when(parkingSpotRepository.findAvailableHandicappedSpots(parkingLot.getId()))
+                .thenReturn(List.of(spot));
         when(parkingSpotRepository.save(any(ParkingSpot.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -105,10 +105,10 @@ class SpotAssignmentServiceTest {
                 .available(true)
                 .build();
 
-        when(parkingSpotRepository.findAvailableMotorcycleSpot(parkingLot.getId()))
-                .thenReturn(Optional.empty());
-        when(parkingSpotRepository.findAvailableCompactSpot(parkingLot.getId()))
-                .thenReturn(Optional.of(compactSpot));
+        when(parkingSpotRepository.findAvailableMotorcycleSpots(parkingLot.getId()))
+                .thenReturn(List.of());
+        when(parkingSpotRepository.findAvailableCompactSpots(parkingLot.getId()))
+                .thenReturn(List.of(compactSpot));
         when(parkingSpotRepository.save(any(ParkingSpot.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -118,8 +118,8 @@ class SpotAssignmentServiceTest {
         assertThat(assigned.get()).isSameAs(compactSpot);
         assertThat(assigned.get().isAvailable()).isFalse();
 
-        verify(parkingSpotRepository).findAvailableMotorcycleSpot(parkingLot.getId());
-        verify(parkingSpotRepository).findAvailableCompactSpot(parkingLot.getId());
-        verify(parkingSpotRepository, never()).findAvailableLargeSpot(parkingLot.getId());
+        verify(parkingSpotRepository).findAvailableMotorcycleSpots(parkingLot.getId());
+        verify(parkingSpotRepository).findAvailableCompactSpots(parkingLot.getId());
+        verify(parkingSpotRepository, never()).findAvailableLargeSpots(parkingLot.getId());
     }
 }

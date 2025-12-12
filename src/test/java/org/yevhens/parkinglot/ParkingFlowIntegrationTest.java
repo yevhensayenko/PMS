@@ -51,9 +51,13 @@ class ParkingFlowIntegrationTest {
         ParkingLotDto parkingLot = createLot("Test Lot");
         ParkingLevelDto level = createLevel(parkingLot.id(), 1);
         createSpot(parkingLot.id(), level.parkingLevel(), 1, ParkingSpotType.COMPACT, true);
+        createSpot(parkingLot.id(), level.parkingLevel(), 2, ParkingSpotType.COMPACT, true);
 
         ParkingSpotId parkingSpotId = new ParkingSpotId(parkingLot.id(), level.parkingLevel(), 1);
         assertThat(parkingSpotRepository.findById(parkingSpotId)).get().extracting(ParkingSpot::isAvailable).isEqualTo(true);
+
+        ParkingSpotId parkingSpotId2 = new ParkingSpotId(parkingLot.id(), level.parkingLevel(), 2);
+        assertThat(parkingSpotRepository.findById(parkingSpotId2)).get().extracting(ParkingSpot::isAvailable).isEqualTo(true);
 
         given()
                 .contentType(ContentType.JSON)
@@ -61,7 +65,7 @@ class ParkingFlowIntegrationTest {
                 .get("/api/v1/parking-lots/{id}/levels/{level}/parking-spots", parkingLot.id(), level.parkingLevel())
                 .then()
                 .statusCode(200)
-                .body("$", Matchers.hasSize(1));
+                .body("$", Matchers.hasSize(2));
 
         Receipt receipt = given()
                 .contentType(ContentType.JSON)

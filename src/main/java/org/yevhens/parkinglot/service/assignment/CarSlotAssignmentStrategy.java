@@ -20,17 +20,17 @@ public class CarSlotAssignmentStrategy implements SlotAssignmentStrategy<Car> {
     @Override
     public Optional<? extends ParkingSpot> assignSpot(Car car, ParkingLot parkingLot) {
         if (car.isHandicapped()) {
-            Optional<HandicappedSpot> availableHandicappedSpot = parkingSpotRepository.findAvailableHandicappedSpot(parkingLot.getId());
+            Optional<HandicappedSpot> availableHandicappedSpot = parkingSpotRepository.findAvailableHandicappedSpots(parkingLot.getId()).stream().findFirst();
             if (availableHandicappedSpot.isPresent()) {
                 return availableHandicappedSpot;
             }
         }
 
-        var availableCompactSpot = parkingSpotRepository.findAvailableCompactSpot(parkingLot.getId());
+        var availableCompactSpot = parkingSpotRepository.findAvailableCompactSpots(parkingLot.getId()).stream().findFirst();
         if (availableCompactSpot.isPresent()) {
             return availableCompactSpot;
         }
 
-        return parkingSpotRepository.findAvailableLargeSpot(parkingLot.getId());
+        return parkingSpotRepository.findAvailableLargeSpots(parkingLot.getId()).stream().findFirst();
     }
 }

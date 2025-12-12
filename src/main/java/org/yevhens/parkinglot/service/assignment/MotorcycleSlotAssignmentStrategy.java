@@ -18,16 +18,16 @@ public class MotorcycleSlotAssignmentStrategy implements SlotAssignmentStrategy<
 
     @Override
     public Optional<? extends ParkingSpot> assignSpot(Motorcycle motorcycle, ParkingLot parkingLot) {
-        var availableMotorcycleSpot = parkingSpotRepository.findAvailableMotorcycleSpot(parkingLot.getId());
+        var availableMotorcycleSpot = parkingSpotRepository.findAvailableMotorcycleSpots(parkingLot.getId()).stream().findFirst();
         if (availableMotorcycleSpot.isPresent()) {
             return availableMotorcycleSpot;
         }
 
-        var availableCompactSpot = parkingSpotRepository.findAvailableCompactSpot(parkingLot.getId());
+        var availableCompactSpot = parkingSpotRepository.findAvailableCompactSpots(parkingLot.getId()).stream().findFirst();
         if (availableCompactSpot.isPresent()) {
             return availableCompactSpot;
         }
 
-        return parkingSpotRepository.findAvailableLargeSpot(parkingLot.getId());
+        return parkingSpotRepository.findAvailableLargeSpots(parkingLot.getId()).stream().findFirst();
     }
 }
